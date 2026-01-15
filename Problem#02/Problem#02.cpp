@@ -40,7 +40,7 @@ void PrintSum(const int arr[3][3],const short Rows, const short Cols) {
 
 	for (short i = 0; i < Rows; i++) {
 
-		cout << "The sum of row " << i + 1 << " is " << RowSum(arr, i, Cols)<<endl;
+		cout << "The sum of row R " << i + 1 << " is " << RowSum(arr, i, Cols)<<endl;
 	}
 
 
