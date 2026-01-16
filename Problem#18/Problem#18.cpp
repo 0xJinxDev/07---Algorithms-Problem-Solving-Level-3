@@ -35,12 +35,27 @@ bool isNumberExistInArray(const int arr[3][3], const short Rows, const short Col
 	return false;
 
 }
+bool isNumberPrintedBefore(const int arr[3][3], const short Rows, const short Cols, const int number) {
 
+	for (short i = 0; i <= Rows; i++) {
+
+		for (short j = 0; j <= Cols; j++) {
+
+			if (i == Rows && j == Cols) {
+				return false;
+			}
+			if (arr[i][j] == number) {
+				return true;
+			}
+		}
+	}
+	return false;
+}
 void PrintIntersectedNumbers(const int Array1[3][3], const int Array2[3][3], const short Rows, const short Cols) {
 
 	for (short i = 0; i < Rows; i++) {
 		for (short j = 0; j < Cols; j++) {
-			if (isNumberExistInArray(Array2, Rows, Cols, Array1[i][j])) {
+			if (isNumberExistInArray(Array2, Rows, Cols, Array1[i][j])&& !isNumberPrintedBefore(Array1,i,j,Array1[i][j])) {
 				cout <<setw(3) << Array1[i][j];
 			}
 		}
@@ -54,6 +69,7 @@ void PrintMatrixArray(const int arr[3][3], const short Rows, const short Cols) {
 		}
 		cout << endl;
 	}
+	cout << endl;
 }
 int main() {
 
