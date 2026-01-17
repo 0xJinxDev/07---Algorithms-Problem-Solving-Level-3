@@ -6,5 +6,10 @@
   <Project Path="Problem#01/Problem#01.vcxproj" Id="86660a2e-941a-42ba-af8f-437024ef6996" />
   <Project Path="Problem#02/Problem#02.vcxproj" Id="011590a2-e4a0-4b95-ba6e-ad038c85a921" />
   <Project Path="Problem#03/Problem#03.vcxproj" Id="c8ec3001-59bf-49c0-bb5c-347b613c3343" />
+  <Project Path="Problem#04/Problem#04.vcxproj" Id="015394da-26bd-45fd-93df-8e921497b7a4" />
+  <Project Path="Problem#05/Problem#05.vcxproj" Id="b0c1d790-ba3d-4b69-8555-19832c15fc8d" />
+  <Project Path="Problem#06/Problem#06.vcxproj" Id="0dbdf24f-c1a9-402a-81fe-8c4d80ac344f" />
+  <Project Path="Problem#07/Problem#07.vcxproj" Id="79c4bfeb-5e37-4c7a-ac45-306fc2b32d67" />
+  <Project Path="Problem#08/Problem#08.vcxproj" Id="a5f4a264-4ed1-42fc-a605-8ae98cd4ce4f" />
   <Project Path="Problem#18/Problem#18.vcxproj" Id="e11516dd-d5fa-4559-b124-6f4b5c946797" />
 </Solution>
