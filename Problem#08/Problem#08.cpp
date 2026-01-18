@@ -28,7 +28,7 @@ void PrintMatrix(const int arr[3][3], const short Rows, const short Cols) {
 
 		for (short j = 0; j < Cols; j++) {
 
-			cout << setw(4) << arr[i][j];
+			cout << setw(6) << arr[i][j];
 		}
 		cout << endl;
 	}
@@ -36,41 +36,54 @@ void PrintMatrix(const int arr[3][3], const short Rows, const short Cols) {
 
 }
 
-void PrintArray(const int arr[3], const short Length) {
+void PrintArray(const int arr[9], const short Length) {
 
 	for (short i = 0; i < Length; i++) {
-		cout << setw(4) << arr[i];
+		cout << setw(6) << arr[i];
 	}
 	cout << endl;
 }
-//Wrong 
-int MultiplyArraysToArray(const int Array1[3][3], const int Array2[3][3],const short Rows, const short Cols) {
+
+void AddElementToArray(int Multiply[9], const int number, const int pos) {
+
+	Multiply[pos] = number;
+
+}
+
+void  MultiplyArraysToArray(const int Array1[3][3], const int Array2[3][3],int Multiply[9],const short Rows, const short Cols) {
+	int counter = 0;
 	for (short i = 0; i < Rows; i++) {
 		for (short j = 0; j < Cols; j++) {
 
-			return Array1[i][j] * Array2[i][j];
+			AddElementToArray(Multiply, (Array1[i][j] * Array2[i][j]), counter);
+			counter++;
 
 		}
 	}
 }
 
-void AddMultiplicationToArray(const int Array1[3][3], const int Array2[3][3], int Multiply[3], const short Rows, const short Cols,const short Length) {
+void MultiplyArraysToMatrix(const int Array1[3][3], const int Array2[3][3], int Result[3][3], const short Rows, const short Cols) {
 
-	for (short i = 0; i < Length; i++) {
-		Multiply[i] = MultiplyArraysToArray(Array1, Array2, 3, 3);
+	for (short i = 0; i < Rows; i++) {
+		for (short j = 0; j < Cols; j++) {
+			Result[i][j] = Array1[i][j] * Array2[i][j];
+		}
 	}
 }
+
 int main() {
 
-
-	int Array1[3][3] = {}, Array2[3][3] = {}, Multiply[3] = {};
+	srand((unsigned)time(NULL));
+	int Array1[3][3] = {}, Array2[3][3] = {}, Multiply[9] = {}, MatrixResult[3][3] = {};
 	FillArrayWithRandomNumbers(Array1, 3, 3);
 	FillArrayWithRandomNumbers(Array2, 3, 3);
 
 	PrintMatrix(Array1, 3, 3);
 	PrintMatrix(Array2, 3, 3);
-	AddMultiplicationToArray(Array1, Array2, Multiply, 3, 3, 3);
-	PrintArray(Multiply, 3);
+	MultiplyArraysToArray(Array1, Array2, Multiply, 3, 3);
+	PrintArray(Multiply, 9);
+	MultiplyArraysToMatrix(Array1, Array2, MatrixResult, 3, 3);
+	PrintMatrix(MatrixResult, 3, 3);
 
 
 }
