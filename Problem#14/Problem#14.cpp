@@ -36,13 +36,7 @@ int main() {
 	
 	int arr[3][3] = { 5,0,0,0,5,0,0,0,5 };
 
-	if (IsScalarMatrix(arr, 3, 3)) {
-		cout << "Scalar!\n";
-	}
-	else
-	{
-		cout << "Not scalar!\n";
-	}
+	cout << (IsScalarMatrix(arr, 3, 3) ? "Scalar\n" : "Not scalar\n");
 
 
 	return 0;

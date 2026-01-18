@@ -53,7 +53,7 @@ int CountNumber(const int arr[3][3], const short Rows, const short Cols, const i
 	return counter;
 }
 int main() {
-
+	srand((unsigned)time(NULL));
 	int arr[3][3] = {}, Number;
 	FillArrayWithRandomNumbers(arr, 3, 3);
 	PrintArray(arr, 3, 3);

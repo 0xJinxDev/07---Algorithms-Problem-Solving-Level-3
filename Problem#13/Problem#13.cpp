@@ -39,12 +39,6 @@ bool IsIdentityMatrix(const int arr[3][3], const short Rows, const short Cols) {
 int main() {
 	int arr[3][3] = { 1,0,0,0,1,0,0,0,1 };
 	PrintArray(arr, 3, 3);
-
-	if (IsIdentityMatrix(arr, 3, 3)) {
-		cout << "Identity!\n";
-	}
-	else {
-
-		cout << "Not identity!\n";
-	}
+	
+	cout << (IsIdentityMatrix(arr, 3, 3) ? "Identity\n" : "Not identity\n");
 }
