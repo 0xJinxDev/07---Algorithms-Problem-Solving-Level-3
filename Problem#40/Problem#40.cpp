@@ -1,4 +1,4 @@
-//Write a program to join a vector of strings then put it into a single string with separators
+//Write a program to join a array of string of strings then put it into a single string with separators
 #include <iostream>
 #include <string>
 #include <vector>
@@ -15,7 +15,7 @@ void FillVector(vector <string>& vWords) {
 	string word;
 
 	while (Flag == 'Y' || Flag == 'y') {
-		
+
 		ReadString(word, "Please enter your word:");
 		vWords.push_back(word);
 		cout << "Do you want to add another word ?(y/n) \n";
@@ -38,21 +38,37 @@ void JoinString(string& line, const string& Delim, const vector <string>& vWords
 	bool isFirst = true;
 	for (const string& word : vWords) {
 		if (!isFirst)
-		line += Delim;
+			line += Delim;
 		line += word;
 		isFirst = false;
 	}
-	
-
-
 }
+
+void JoinString(string& line, const string& Delim, const string arr[], const short Length) {
+
+	line.clear();
+	bool isFirst = true;
+	for (short i = 0; i < Length; i++) {
+
+		if (!isFirst)
+			line += Delim;
+		line += arr[i];
+		isFirst = false;
+
+	}
+}
+
 int main() {
 	vector <string> vWords;
 	string line;
 	FillVector(vWords);
+	string arr[3] = { "Hamza","Hamza","Hamza" };
 	PrintVector(vWords);
 	JoinString(line, "-", vWords);
-	cout << line<<endl;
+
+	cout << "The vector after joining:" <<endl <<line << endl;
+	JoinString(line, "-", arr,3);
+	cout << "The array after joining:" << endl << line << endl;
 
 	return 0;
 }
