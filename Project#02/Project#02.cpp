@@ -1,4 +1,4 @@
-//Bank project #1
+//Bank project #2
 
 #include <iostream>
 #include <string>
@@ -13,14 +13,21 @@ const string Delim = "/##/";
 
 void PrintMainMenu();
 
+
 struct stClient {
 	string AccountNumber;
 	string Name;
 	int age;
 	float balance;
-	bool Delete = false; 
+	bool Delete = false;
 };
-enum enAction { ToPrintClients = 1, ToAddClient = 2, ToDeleteClient = 3, ToUpdateClient = 4, ToFindClient = 5, ToExit = 6 };
+enum enAction {
+	ToPrintClients = 1, ToAddClient = 2, ToDeleteClient = 3, ToUpdateClient = 4,
+	ToFindClient = 5, ToDoTransaction = 6, ToExit = 7
+};
+enum enTransactinoAction {
+	ToDeposit = 1, ToWithdraw = 2, ToShowTotalBalance = 3, ToGoBackToMainMenu = 4
+};
 
 string ReadString(const string& Message) {
 	cout << Message << endl;
@@ -44,9 +51,15 @@ float ReadFloat(const string& Message) {
 }
 void GoBackToMainMenue()
 {
-	cout << "\n\nPress any key to go back to Main Menue...";
+	cout << "\n\nPress any key to go back to Main Menu...";
 	system("pause>0");
 	PrintMainMenu();
+}
+void GoBackToTrasnaction()
+{
+	cout << "\n\nPress any key to go back to Transactions Menu...";
+	system("pause>0");
+	
 }
 string RecordToLine(stClient& c) {
 	string line;
@@ -78,30 +91,32 @@ void PrintMainMenu() {
 	cout << "[3] Delete Client." << endl;
 	cout << "[4] Update Client Info." << endl;
 	cout << "[5] Find Client." << endl;
-	cout << "[6] Exit." << endl;
+	cout << "[6] Transactions." << endl;
+	cout << "[7] Exit." << endl;
 	cout << "=====================================================" << endl;
 	cout << endl << endl;
 }
 
 void PrintClients(const vector <stClient>& vClients) {
-	cout << "Total Number of Clients is: " << vClients.size()<<endl;
-	cout <<left<< setw(15) << "|Account Number|" << setw(15) << "|Name|" << setw(10) << "|Age|" << setw(15) << "|Balance|" << endl;
+	cout << "Total Number of Clients is: " << vClients.size() << endl;
+	cout << left << setw(25) << "Account Number" << setw(25) << "Name" << setw(15) << "Age" << setw(15) << "Balance" << endl;
 	for (const stClient& Client : vClients) {
 
-		cout <<left<< setw(15) << Client.AccountNumber << setw(15) << Client.Name << setw(10) << Client.age << setw(15) << Client.balance << endl;
+		cout << left << setw(25) << Client.AccountNumber << setw(25) << Client.Name << setw(15) << Client.age << setw(15) << Client.balance << endl;
 	}
 	if (vClients.empty()) {
 		cout << "No clients found.\n";
 		return;
 	}
 }
-void FindClient(string &ClientNumber, const vector <stClient> &vClients) {
+void FindClient(string& ClientNumber, const vector <stClient>& vClients) {
 	bool Found = false;
-	cout << left << setw(4) << "|Account Number|" << setw(7) << "|Name|" << setw(3) << "|Age|" << setw(5) << "|Balance|" << endl;
+	cout << left << setw(25) << "Account Number" << setw(25) << "Name" << setw(15) << "Age" << setw(15) << "Balance" << endl;
 	for (const stClient& Client : vClients) {
 		if (ClientNumber == Client.AccountNumber) {
-			cout << left << setw(4) << Client.AccountNumber << setw(7) << Client.Name << setw(3) << Client.age << setw(5) << Client.balance << endl;
+			cout << left << setw(25) << Client.AccountNumber << setw(25) << Client.Name << setw(15) << Client.age << setw(15) << Client.balance << endl;
 			Found = true;
+
 		}
 	}
 
@@ -116,11 +131,11 @@ bool isRegistered(const string& AccountNumber, const vector<stClient>& vClients)
 	}
 	return false;
 }
-stClient ReadClient(const vector <stClient> & vClients,bool Update = false) {
+stClient ReadClient(const vector <stClient>& vClients, bool Update = false) {
 	stClient tmp;
 
 	tmp.AccountNumber = ReadString("Please enter account number:");
-	while (isRegistered(tmp.AccountNumber, vClients)&&!Update) {
+	while (isRegistered(tmp.AccountNumber, vClients) && !Update) {
 		cout << "The account already exists.\n";
 		tmp.AccountNumber = ReadString("Please enter account number:");
 	}
@@ -135,18 +150,18 @@ void DeleteClient(vector <stClient>& vClients) {
 	string line;
 	bool FirstRecord = true;
 	bool NoRecords = true;
-		for (stClient& c : vClients) {
+	for (stClient& c : vClients) {
 
-			if (!c.Delete) {
-				NoRecords = false;
-				line = RecordToLine(c);
-				SaveToFile(line, FirstRecord ? true : false);
-				FirstRecord = false;
-			}
+		if (!c.Delete) {
+			NoRecords = false;
+			line = RecordToLine(c);
+			SaveToFile(line, FirstRecord ? true : false);
+			FirstRecord = false;
 		}
-		if (NoRecords) {
-			line.clear();
-			SaveToFile(line, NoRecords);
+	}
+	if (NoRecords) {
+		line.clear();
+		SaveToFile(line, NoRecords);
 	}
 
 }
@@ -192,7 +207,7 @@ void LineToRecord(const string& line, vector<stClient>& vClients) {
 		else {
 			if (!word.empty()) {
 				FillClient(word, vClients, counter, tmp);
-				counter++; 
+				counter++;
 				word.clear();
 			}
 			i += Delim.length();
@@ -223,7 +238,7 @@ void UpdateVector(vector <stClient>& vClients) {
 }
 
 
-void VectorToFile(vector <stClient>& vClients,enAction Action) {
+void VectorToFile(vector <stClient>& vClients, enAction Action) {
 
 	switch (Action) {
 
@@ -262,7 +277,7 @@ void UpdateClientInfo(const string& AccountNumber, vector<stClient>& vClients) {
 	for (stClient& c : vClients) {
 
 		if (c.AccountNumber == AccountNumber) {
-			c = ReadClient(vClients,true);
+			c = ReadClient(vClients, true);
 
 		}
 	}
@@ -288,7 +303,7 @@ void UpdateClient(vector <stClient>& vClients) {
 
 }
 
-void SearchForClient(const vector<stClient> &vClients) {
+void SearchForClient(const vector<stClient>& vClients) {
 	string AccountNumber = ReadString("Please enter the account number you want to search for");
 	FindClient(AccountNumber, vClients);
 
@@ -301,6 +316,98 @@ void AddClient(vector<stClient>& vClients) {
 	SaveToFile(line);
 }
 
+void ShowTransactionsMenu() {
+	system("cls");
+	cout << "=====================================================" << endl;
+	cout << "[1] Deposit." << endl;
+	cout << "[2] Withdraw." << endl;
+	cout << "[3] Total Balance." << endl;
+	cout << "[4] Go to Main Menu." << endl;
+	cout << "=====================================================" << endl;
+	cout << endl << endl;
+}
+
+void Deposit(vector <stClient>& vClients) {
+	PrintClients(vClients);
+	string AccountID = ReadString("Please enter account ID:");
+	if (isRegistered(AccountID, vClients)) {
+	FindClient(AccountID, vClients);
+	int Amount = ReadInt("Please enter the amount you want to deposit:");
+	
+	for (stClient& c : vClients) {
+
+		if (c.AccountNumber == AccountID) {
+			c.balance += Amount;
+			UpdateFile(vClients);
+			cout << "Balance updated successfully!\n";
+		}
+	}
+
+
+	}
+	else {
+		cout << "Client not found!\n";
+	}
+	GoBackToTrasnaction();
+}
+void Withdraw(vector <stClient>& vClients) {
+	PrintClients(vClients);
+	string AccountID = ReadString("Please enter account ID:");
+	if (isRegistered(AccountID, vClients)) {
+		FindClient(AccountID, vClients);
+		int Amount = ReadInt("Please enter the amount you want to withdraw:");
+
+		for (stClient& c : vClients) {
+
+			if (c.AccountNumber == AccountID) {
+				c.balance -= Amount;
+				UpdateFile(vClients);
+				cout << "Balance updated successfully!\n";
+			}
+		}
+
+
+	}
+	else {
+		cout << "Client not found!\n";
+	}
+	GoBackToTrasnaction();
+}
+int TotalBalances(vector <stClient>& vClients) {
+	PrintClients(vClients);
+	
+	int TotalBalance;
+
+
+		for (stClient& c : vClients) {
+
+			
+				TotalBalance = c.balance;
+				
+			
+		}
+
+
+	
+	
+	return TotalBalance;
+}
+void ChoiceTransaction(vector <stClient>& vClients, enTransactinoAction Action) {
+	switch (Action) {
+	case ToDeposit: system("cls"); Deposit(vClients); UpdateVector(vClients);break ;
+	case ToWithdraw: system("cls"); Withdraw(vClients); UpdateVector(vClients); break;
+	case ToShowTotalBalance: system("cls"); cout <<TotalBalances(vClients)<<endl; GoBackToTrasnaction(); break;
+	}
+}
+void Transactions(vector <stClient>& vClients) {
+	enTransactinoAction Action;
+	do {
+		ShowTransactionsMenu();
+		
+		Action = (enTransactinoAction)ReadInt("Choose what do you want to do? [1 to 4]?");
+		ChoiceTransaction(vClients, Action);
+	} while (Action != ToGoBackToMainMenu);
+}
 
 void Choice(vector<stClient>& vClients, enAction Action) {
 	switch (Action) {
@@ -309,23 +416,26 @@ void Choice(vector<stClient>& vClients, enAction Action) {
 	case ToDeleteClient:   system("cls"); Deletion(vClients); GoBackToMainMenue(); break;
 	case ToUpdateClient:   system("cls"); UpdateClient(vClients); GoBackToMainMenue(); break;
 	case ToFindClient:     system("cls"); SearchForClient(vClients); GoBackToMainMenue(); break;
+	case ToDoTransaction:  system("cls"); Transactions(vClients); break;
 	case ToExit:           break;
-	default:               cout << "Please enter from 1 to 6." << endl; break;
+	default:               cout << "Please enter from 1 to 7." << endl; break;
 	}
 }
 
 
 int main() {
+
 	stClient Client;
 	vector <stClient> vClients;
 	enAction Action;
 	UpdateVector(vClients);
 	do {
 		PrintMainMenu();
-		Action = (enAction)ReadInt("Choose what do you want to do? [1 to 6]?");
+		Action = (enAction)ReadInt("Choose what do you want to do? [1 to 7]?");
 		Choice(vClients, Action);
-	
+
 	} while (Action != ToExit);
+
 
 	return 0;
 }
